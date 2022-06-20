@@ -22,7 +22,12 @@ description:         Please see the README on Github at <https://github.com/gith
 dependencies:
 - base >= 4.11 && < 10
 - rio >= 0.1.12.0
-- microlens-th
+- microlens-platform
+- QuickCheck
+- quickcheck-instances
+- uuid
+- refined
+- singletons
 
 ghc-options:
 - -Wall

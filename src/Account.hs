@@ -1,38 +1,81 @@
-{-# LANGUAGE NoImplicitPrelude, OverloadedStrings #-}
+{-# LANGUAGE NoImplicitPrelude , 
+             TemplateHaskell   , 
+             DuplicateRecordFields, 
+             GeneralisedNewtypeDeriving,
+             ExistentialQuantification,
+             GADTs #-}
+{-# OPTIONS_GHC -Wno-unrecognised-pragmas #-}
+{-# HLINT ignore "Use newtype instead of data" #-}
+
 module Account where
 import           AccountInternal
-import           RIO
+import           Data.UUID                      ( UUID )
+import           Lens.Micro.Platform
+import           Pointer
+import           RIO                     hiding ( lens )
+import qualified RIO.Map                       as M
+import qualified RIO.Seq                       as S
 import qualified RIO.Text                      as T
-import RIO.Lens
-
+import           RIO.Time                       ( UTCTime )
+import           Test.QuickCheck
 --  tesdt & x .~  something
 -- [1,2,3] & mapped %~ succ // over / modify
 --  "abc" & mapped .~ 'x'   // set
 -- ('x','y') ^. _1 = 'x'    // get
-
-new :: Bill -> m Account -> m Account
-new = undefined
-
-
-pay' :: Money -> Bill -> (Bill, Int)
-pay' m b = b & left <%~ (m ^. money)
-
-pay :: OCR -> Money -> Account -> Either T.Text Account
-pay target paymentAmt acc = undefined
-
-minusOrNill :: Int -> Int -> Int
-minusOrNill i1 i2 = let r = (i1 - i2) in if r > 0 then r else 0
-
-
-billWithOcr :: OCR -> Account -> [Bill]
-billWithOcr targetOCR acc = filter (\b -> targetOCR == b ^. ocr) $ acc ^. bills
-
 --
-payed :: Account -> [Bill]
-payed a = filter (\b -> 0 == b ^. left) $ a ^. bills
---filter (== 0) . (^. left) . (^. bills)
+--
+{-
+data Invoice = Invoice
+  { _ref     :: Ref
+  , _ocr     :: OCR
+  , _expires :: UTCTime
+  , _amount  :: Money
+  , _active  :: Bool
+  }
+makeLenses ''Invoice
 
--- find all not fully payed bills
-unPayed :: Account -> [Bill]
-unPayed acc = filter (\a -> 0 >= a ^. left) $ acc ^. bills
 
+instance Arbitrary Invoice where
+  arbitrary =
+    Invoice
+      <$> arbitrary
+      <*> arbitrary
+      <*> arbitrary
+      <*> arbitrary
+      <*> arbitrary
+
+{- An account takes in invoices and payments -}
+
+data Payment = Payment
+  { _pa       :: Money
+  , _paymentR :: Ref
+  , target    :: Ref
+  }
+
+makeLenses ''Payment
+instance Arbitrary Payment where
+  arbitrary = Payment <$> arbitrary <*> arbitrary <*> arbitrary
+
+
+data Account = Account
+  { _is :: M.Map Ref Invoice
+  }
+
+makeLenses ''Account
+
+{- Underpaying generates a new invoice with the remaining amount
+ - Overpaying returns remaining money
+ -
+ - -}
+
+makePayment :: Account -> Payment -> Account
+makePayment p = undefined
+
+leq :: Int -> Int
+leq i | i == 0 = 0
+      | i < 0  = -1
+      | i > 0  = 1
+
+data Event = NewInvoice Invoice
+           |  Payment   Payment
+-}
