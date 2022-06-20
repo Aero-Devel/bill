@@ -16,7 +16,7 @@ import qualified Refined                       as R
 import qualified Refined.Unsafe                as R
 
 {-
-    Some simple combinators for avoiding
+    Some simple combinators for avoidig
     having to deal with eithers 
 -}
 
