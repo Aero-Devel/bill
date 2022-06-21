@@ -14,7 +14,6 @@ import           RIO.Time                       ( UTCTime )
 import           Test.QuickCheck
 import           Test.QuickCheck.Instances
 
-
 data Ref = Ref
   { _refId   :: UUID
   , _created :: UTCTime
@@ -26,3 +25,6 @@ instance Arbitrary Ref where
 
 instance Ord Ref where
  (<=) r1 r2 = (r1 ^. created) <= (r2 ^. created)
+
+
+ 
