@@ -12,8 +12,7 @@ import           Lens.Micro.Platform
 import           RIO
 import           RIO.Time                       ( UTCTime )
 import           Test.QuickCheck
-import           Test.QuickCheck.Instances
-
+import Test.QuickCheck.Instances
 
 data Ref = Ref
   { _refId   :: UUID

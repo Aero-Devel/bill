@@ -45,3 +45,4 @@ unrefThen p1 p2 op = op (R.unrefine p1) (R.unrefine p2)
 
 unref2 :: PosInt -> PosInt -> (Integer, Integer)
 unref2 p1 p2 = unrefThen p1 p2 (,)
+

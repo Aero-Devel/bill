@@ -28,6 +28,7 @@ dependencies:
 - uuid
 - refined
 - singletons
+- singletons-base
 
 ghc-options:
 - -Wall

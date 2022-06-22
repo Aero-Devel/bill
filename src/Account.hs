@@ -8,16 +8,6 @@
 {-# HLINT ignore "Use newtype instead of data" #-}
 
 module Account where
-import           AccountInternal
-import           Data.UUID                      ( UUID )
-import           Lens.Micro.Platform
-import           Pointer
-import           RIO                     hiding ( lens )
-import qualified RIO.Map                       as M
-import qualified RIO.Seq                       as S
-import qualified RIO.Text                      as T
-import           RIO.Time                       ( UTCTime )
-import           Test.QuickCheck
 --  tesdt & x .~  something
 -- [1,2,3] & mapped %~ succ // over / modify
 --  "abc" & mapped .~ 'x'   // set

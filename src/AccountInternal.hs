@@ -7,24 +7,15 @@
 
 
 module AccountInternal where
-import           Lens.Micro.Platform            ( (%~)
-                                                , (&)
-                                                , (^.)
-                                                , makeLenses
+import           Lens.Micro.Platform            ( makeLenses
                                                 )
 import           PosInt
 import           RIO
 import           RIO.Time                       ( Day )
-import qualified Refined                       as R
-import qualified Refined.Unsafe                as R
-
-
 
 newtype OCR = OCR { _ocr :: PosInt } deriving (Eq, Show, Ord)
 makeLenses ''OCR
 
-data Currency = USD | EUR | GBP | CAD | JPY | CHF | AUD | NZD | NOK | SEK | DKK | PLN | RUB | BGN | HUF | CZK | INR | LTL | LVL | MDL
-              | LVR | MTL | RON | TRL | ZLV | EURO deriving (Eq, Show, Ord)
 
 newtype Money = Money
   { _amount   :: PosInt
