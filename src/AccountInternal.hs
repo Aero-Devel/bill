@@ -63,13 +63,19 @@ pay d i m = -- know that the following fields are fixed :
     let newI = oInvoice & invoiceAmount %~ (\x -> x & amount .~ refineAbs diff)
     in  (Just newI, zeroDollars)
 
-
 p3 :: Invoice -> Money -> a
 p3 i m =
   case unrefThen (i ^. (invoiceAmount . amount)) (m ^. amount) compare of
     GT -> error "Not enough money"
     EQ -> error "No change"
     LT -> error "Too much money"
+
+class SafeSubable s
+   sub :: (SafeSubable s2, SafeSubable s3) -> s -> s2 -> s3 
+
+{-
+-}
+pay :: Day -> Invoice -> Money -> a
 
 
 (.:) :: (b -> c) -> (a1 -> a2 -> b) -> a1 -> a2 -> c
